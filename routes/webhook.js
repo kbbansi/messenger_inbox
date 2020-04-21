@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var accessToken = "EAAjWZB3uKxzkBAMpwdiHwLCiD5BKLOAJ9uPbOTa8F5nVsFeBCjfUuPh9ZADDcuWU4rBj1nZCJxRDzmS6sz0NVP8ZAZA8g0WumRuAZA0z0ZCABtH6ZCTGZBsw3UZB2QLZBuz3dp6oReEzFCJbZBeNUNaWMp8NLcTkKzAIEIExXsXm7uZA5V8rutFcTFSJA";
 router.post('/webhook', function(req, res) {
     var body = req.body;
 
@@ -8,9 +9,13 @@ router.post('/webhook', function(req, res) {
     if (body.object === 'page') {
         // loop over each entry
         body.entry.forEach(function(entry) {
-            // get the message. entry.messaging is an array but will only ever contain one message so get index 0
+            // get the body of the webhook event
             var webhook_event = entry.messaging[0];
             console.log(webhook_event);
+
+            // get sender PSID
+            var sender_psid = webhook_event.sender.id;
+            console.log('Sender PSID: ' + sender_psid);
         });
         // return status 200 to all requests
         res.status(200).send('EVENT_RECEIVED');
@@ -41,5 +46,20 @@ router.get('/get-webhook', function (req, res) {
        }
    }
 });
+
+// handle messages
+function handleMessage(sender_psid, received_message) {
+    
+}
+
+// handles messaging_postback events
+function handlePostback(sender_psid, received_postback){
+
+}
+
+// Send response messages via Send API
+function callSenderAPI(sender_psid, response) {
+
+}
 
 module.exports = router;
